@@ -13,6 +13,9 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<TodoApp>()
+                .Property(x => x.Id)
+                ;
+            builder.Entity<TodoApp>()
                    .Property(x => x.Descricao)
                    .HasMaxLength(120)
                    .IsRequired();
