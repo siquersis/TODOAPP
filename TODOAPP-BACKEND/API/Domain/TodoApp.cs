@@ -7,10 +7,12 @@ namespace API.Domain
         [JsonIgnore]
         public Guid Id { get; set; }
         [JsonPropertyName("Descricao")]
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
+
         [JsonPropertyName("Data")]
         public DateTime Data { get; set; }
+
         [JsonPropertyName("Status")]
-        public string Status { get; set; }
+        public string? Status { get; set; }
     }
 }
