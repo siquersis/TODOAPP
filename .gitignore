@@ -33,12 +33,7 @@ bld/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
-.vscode/*
-! .vscode/settings.json
-! .vscode/tasks.json
-! .vscode/launch.json
-! .vscode/extensions.json
-! .vscode/*.code-snippets
+
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
@@ -360,3 +355,35 @@ MigrationBackup/
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Cache TypeScript
+*.tsbuildinfo
+
+# Diretório de cache npm opcional
+.npm
+
+# Cache de eslint opcional
+.eslintcache
+# Histórico opcional do REPL
+.node_repl_history
+
+# Saída do 'npm pack'
+*.tgz
+
+# Arquivo de integridade do Yarn
+.yarn-integridade
+
+# arquivo de variáveis de ambiente dotenv
+.Env
+.env.test
+
+# cache do empacotador de pacotes (https://parceljs.org/)
+.cache
+
+# IDE
+.vscode/
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/*.code-snippets
