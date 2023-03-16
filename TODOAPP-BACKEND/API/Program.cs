@@ -83,4 +83,26 @@ app.MapGet("/todos/{descricao}", ([FromRoute] string descricao, TodoAppDbContext
     return Results.NotFound();
 });
 #endregion
+
+#region Busca a tarefa por Status
+app.MapGet("/todos/{status}", ([FromRoute] string status, TodoAppDbContext context) =>
+{
+    app.Logger.LogInformation($"Iniciando processo de busca para o status {status}");
+    var todo = context.TodosApps?
+                      .Include(x => x.Descricao)
+                      .Include(x => x.Data)
+                      .Include(x => x.Status)
+                      .Where(x => x.Status == status)
+                      .First();
+
+    if (todo != null)
+    {
+        app.Logger.LogInformation($"Mostrando o status {status}");
+        return Results.Ok(todo);
+    }
+    app.Logger.LogInformation($"Não foi localizado nenhum status {status} digitado.");
+    return Results.NotFound();
+});
+#endregion
+
 app.Run();
