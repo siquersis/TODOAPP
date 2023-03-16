@@ -35,13 +35,13 @@ app.MapPost("/todos/post", (TodoAppRequest todos, TodoAppDbContext context) =>
     var todo = new TodoApp()
     {
        Descricao = todos.Descricao,
-       Data = DateTime.ParseExact(todos.Data, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+       Data = DateTime.ParseExact(todos.Data, "dd-MM-yyyy", CultureInfo.InvariantCulture),
        Status = todos.Status
     };
 
     context.TodosApps?.Add(todo);
     context.SaveChanges();
-    app.Logger.LogInformation($"Finalizando Post para a tarefa {todos.Descricao} com Código: {todo.Id}");
+    app.Logger.LogInformation($"Finalizando Post para a tarefa {todos.Descricao} com Cï¿½digo: {todo.Id}");
 
     return Results.Created($"/todos/{todo.Descricao}", todo.Descricao);
 });
@@ -52,54 +52,35 @@ app.MapGet("/todos/listaTodos", (TodoAppDbContext context) =>
 {
     app.Logger.LogInformation("Iniciando processo para listar todas as tarefas.");
     var listTodos = context.TodosApps?
-                           .OrderBy(x => x.Descricao)
+                           .OrderBy(x => x.Data.ToString("dd/MM/yyyy"))
                            .ToList();
     app.Logger.LogInformation("Listando tarefas...");
     return Results.Json(listTodos);
 });
 #endregion
 
-#region Busca a tarefa por Descrição
+#region Busca a tarefa por Descriï¿½ï¿½o
 app.MapGet("/todos/{descricao}", ([FromRoute] string descricao, TodoAppDbContext context) =>
 {
     app.Logger.LogInformation($"Iniciando processo de busca para a tarefa {descricao}");
-    var todo = context.TodosApps?
-                      .Include(x => x.Descricao)
-                      .Include(x => x.Data)
-                      .Include(x => x.Status)
-                      .Where(x => x.Descricao == descricao)
-                      .First();
-
-    if (todo != null)
+    if(descricao is not null)
     {
-        app.Logger.LogInformation($"Mostrando tarefa {descricao}");
-        return Results.Ok(todo);
+      var todo = context.TodosApps?
+                        .Include(x => x.Descricao)
+                        .Include(x => x.Data.ToString("dd/MM/yyyy"))
+                        .Include(x => x.Status)
+                        .Where(x => x.Descricao == descricao)
+                        .First();
+
+       if (todo != null)
+       {
+         app.Logger.LogInformation($"Mostrando tarefa {descricao}");
+         return Results.Ok(todo);
+       }
     }
 
     app.Logger.LogInformation($"Nenhuma tarefa encontrada com a {descricao} digitada.");
     return Results.NotFound();
 });
 #endregion
-
-#region Busca a tarefa por Status
-app.MapGet("/todos/{status}", ([FromRoute] string status, TodoAppDbContext context) =>
-{
-    app.Logger.LogInformation($"Iniciando processo de busca para o status {status}");
-    var todo = context.TodosApps?
-                      .Include(x => x.Descricao)
-                      .Include(x => x.Data)
-                      .Include(x => x.Status)
-                      .Where(x => x.Status == status)
-                      .First();
-
-    if (todo != null)
-    {
-        app.Logger.LogInformation($"Mostrando o status {status}");
-        return Results.Ok(todo);
-    }
-    app.Logger.LogInformation($"Não foi localizado nenhum status {status} digitado.");
-    return Results.NotFound();
-});
-#endregion
-
 app.Run();
