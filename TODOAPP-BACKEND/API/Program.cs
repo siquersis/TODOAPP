@@ -38,11 +38,11 @@ app.MapPost("/todos/post", (TodoAppRequest todos, TodoAppDbContext context) =>
        Data = DateTime.ParseExact(todos.Data, "yyyy-MM-dd", CultureInfo.InvariantCulture),
        Status = todos.Status
     };
-    
-    context.TodosApps.Add(todo);
+
+    context.TodosApps?.Add(todo);
     context.SaveChanges();
     app.Logger.LogInformation($"Finalizando Post para a tarefa {todos.Descricao} com Código: {todo.Id}");
-    
+
     return Results.Created($"/todos/{todo.Descricao}", todo.Descricao);
 });
 #endregion
@@ -51,7 +51,7 @@ app.MapPost("/todos/post", (TodoAppRequest todos, TodoAppDbContext context) =>
 app.MapGet("/todos/listaTodos", (TodoAppDbContext context) =>
 {
     app.Logger.LogInformation("Iniciando processo para listar todas as tarefas.");
-    var listTodos = context.TodosApps
+    var listTodos = context.TodosApps?
                            .OrderBy(x => x.Descricao)
                            .ToList();
     app.Logger.LogInformation("Listando tarefas...");
@@ -63,7 +63,7 @@ app.MapGet("/todos/listaTodos", (TodoAppDbContext context) =>
 app.MapGet("/todos/{descricao}", ([FromRoute] string descricao, TodoAppDbContext context) =>
 {
     app.Logger.LogInformation($"Iniciando processo de busca para a tarefa {descricao}");
-    var todo = context.TodosApps
+    var todo = context.TodosApps?
                       .Include(x => x.Descricao)
                       .Include(x => x.Data)
                       .Include(x => x.Status)
@@ -85,7 +85,7 @@ app.MapGet("/todos/{descricao}", ([FromRoute] string descricao, TodoAppDbContext
 app.MapGet("/todos/{status}", ([FromRoute] string status, TodoAppDbContext context) =>
 {
     app.Logger.LogInformation($"Iniciando processo de busca para o status {status}");
-    var todo = context.TodosApps
+    var todo = context.TodosApps?
                       .Include(x => x.Descricao)
                       .Include(x => x.Data)
                       .Include(x => x.Status)

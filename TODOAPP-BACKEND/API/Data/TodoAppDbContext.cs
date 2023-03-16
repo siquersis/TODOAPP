@@ -5,7 +5,7 @@ namespace API.Data
 {
     public class TodoAppDbContext : DbContext
     {
-        public DbSet<TodoApp> TodosApps { get; set; }
+        public DbSet<TodoApp>? TodosApps { get; set; }
 
         public TodoAppDbContext(DbContextOptions<TodoAppDbContext> options)
                                  : base(options) { }
