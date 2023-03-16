@@ -1,0 +1,134 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div
+            class="container p-5"
+            *ngIf="enableTable"
+        >
+            <div class="border boder-light rounded p-5">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            (click)="ViewFormPost()"
+                        >
+                            Cadastrar nova tarefa
+                        </button>
+                    </div>
+                    <div class="col-lg-6">
+                        <div
+                            class="input-group"
+                            [formGroup]="formularioPesquisa"
+                            (ngSubmit)="formularioPesquisa.valid"
+                        >
+                            <input
+                                id="cleanInput"
+                                type="text"
+                                class="form-control"
+                                placeholder="Pesquisar..."
+                            >
+                            <button
+                                class="btn btn-primary"
+                                type="button"
+                                (click)="SearchTodoByDescription()"
+                            >
+                                Pesquisar
+                            </button>
+                            <button
+                                class="btn btn-secondary"
+                                type="button"
+                                (click)="CleanSearch()"
+                            >
+                                Limpar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <table
+                    class="table table-striped table-hover table-sm"
+                    *ngIf="todos"
+                >
+                    <tbody>
+                        <tr class="thead-light">
+                            <th>Descrição da tarefa</th>
+                            <th>Data</th>
+                            <th>Status da tarefa</th>
+                        </tr>
+                        <tr *ngFor="let todo of todos">
+                            <td>{{ todo.Descricao }}</td>
+                            <td>{{ todo.Data }}</td>
+                            <td>{{ todo.Status }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div
+    class="container p-5"
+    *ngIf="enableForm"
+>
+    <div class="row">
+        <div
+            class="col-6 border boder-light rounded p-5 shadow"
+            *ngIf="formulario"
+        >
+            <h6>{{ tituloFormulario }}</h6>
+            <hr>
+            <form
+                [formGroup]="formulario"
+                (ngSubmit)="SendFormOfPost()"
+            >
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        formControlName="descricao"
+                    >
+                </div>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input
+                        type="date"
+                        class="form-control form-control-sm"
+                        formControlName="data"
+                    >
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        formControlName="status"
+                    >
+                </div>
+                <div class="container form-group">
+                    <div class="row">
+                        <div class="col-lg-6 form-group">
+                            <button
+                                type="submit"
+                                class="btn btn-sm btn-primary"
+                            >
+                                Salvar
+                            </button>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-secondary"
+                                (click)="Voltar()"
+                            >
+                                Voltar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
